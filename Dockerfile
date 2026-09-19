@@ -1,8 +1,13 @@
-# Use the lightweight, secure Alpine version of Nginx
 FROM nginx:alpine
 
-# Copy your local static files into Nginx's default public directory
-COPY index.html /usr/share/nginx/html/index.html
+# Remove Nginx default boilerplate configurations
+RUN rm /etc/nginx/nginx.conf
 
-# Expose port 80 to indicate where web traffic enters
+# Mount your custom multi-site routing maps
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy both application directories into the web root
+COPY custom_domain_site /usr/share/nginx/html/custom_domain_site
+COPY render_default_site /usr/share/nginx/html/render_default_site
+
 EXPOSE 80
